@@ -1,0 +1,11 @@
+SELECT count(event_name) event_cnt
+FROM `DA.event_params` us
+join (
+SELECT ga_session_id,
+       count(event_name)
+FROM data-analytics-mate.DA.event_params
+GROUP BY  ga_session_id
+having count(event_name) > 2
+) as  event_count
+on us.ga_session_id = event_count.ga_session_id
+WHERE event_name = 'user_engagement'
